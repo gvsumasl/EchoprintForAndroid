@@ -61,7 +61,7 @@ public class AudioFingerprinter implements Runnable
 	public final static String TRACK_ID_KEY = "track_id";
 	public final static String ARTIST_KEY = "artist";
 	
-	private final String SERVER_URL = "http://144.188.54.197:35825/query?fp_code=";
+	private final String SERVER_URL = "<your server address here>/query?fp_code=";
 	
 	private final int FREQUENCY = 11025;
 	private final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
