@@ -28,7 +28,7 @@
 #include <string.h>
 #include <jni.h>
 #include "edu_gvsu_masl_echoprint_Codegen.h"
-#include "codegen/src/Codegen.h"
+#include "echoprint-codegen-master/src/Codegen.h"
 
 JNIEXPORT jstring JNICALL Java_edu_gvsu_masl_echoprint_Codegen_codegen
   (JNIEnv *env, jobject thiz, jfloatArray pcmData, jint numSamples)
