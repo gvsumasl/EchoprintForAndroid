@@ -12,25 +12,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+# Build instructions for Mac OS X:
+# - Download the master branch of https://github.com/echonest/echoprint-codegen and place in the jni folder.
+# - Download the up to date version of http://www.boost.org/ and place in place in the jni folder.
+# - Update the configuration below to the correct version of Boost.
+# - Download and install the latest version of the Android NDK from https://developer.android.com/tools/sdk/ndk/.
+# - Open Terminal and go to the jni folder (e.g. cd ~/EchoprintForAndroid/jni ).
+# - Run ndk-build from the Android NDK (e.g. /Applications/android-ndk-r10e/ndk-build ).
+# - The generated library will be placed in libs/armeabi/libechoprint-jni.so.
+# - Move the generated library into the correct folder in the Android project.
+
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE    :=echoprint-jni
+LOCAL_MODULE     := echoprint-jni
 
-LOCAL_SRC_FILES :=AndroidCodegen.cpp \
-				/codegen/src/Codegen.cpp \
-				/codegen/src/Whitening.cpp \
-				/codegen/src/SubbandAnalysis.cpp \
-				/codegen/src/MatrixUtility.cpp \
-				/codegen/src/Fingerprint.cpp \
-				/codegen/src/Base64.cpp \
-				/codegen/src/AudioStreamInput.cpp \
-				/codegen/src/AudioBufferInput.cpp
+LOCAL_SRC_FILES  := AndroidCodegen.cpp \
+				    echoprint-codegen-master/src/Codegen.cpp \
+				    echoprint-codegen-master/src/Whitening.cpp \
+				    echoprint-codegen-master/src/SubbandAnalysis.cpp \
+				    echoprint-codegen-master/src/MatrixUtility.cpp \
+				    echoprint-codegen-master/src/Fingerprint.cpp \
+				    echoprint-codegen-master/src/Base64.cpp \
+				    echoprint-codegen-master/src/AudioStreamInput.cpp \
+				    echoprint-codegen-master/src/AudioBufferInput.cpp
 					
-LOCAL_LDLIBS    := -llog\
-					-lz					
-LOCAL_C_INCLUDES :=/Users/alex/Desktop/GVSU/MASLEchoPrint/jni/codegen/src \
-					/Users/alex/Desktop/GVSU/MASLEchoPrint/jni/boost_1_47_0				
+LOCAL_LDLIBS     := -llog\
+				    -lz					
+					
+LOCAL_C_INCLUDES := ./echoprint-codegen-master/src \
+					./boost_1_58_0				
+
+LOCAL_CPPFLAGS   += -fexceptions
 
 include $(BUILD_SHARED_LIBRARY)

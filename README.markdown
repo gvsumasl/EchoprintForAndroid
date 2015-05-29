@@ -1,4 +1,5 @@
 # Android Echoprint
+
 ## Code from the MASL blog post available [here](http://masl.cis.gvsu.edu/2012/01/25/android-echoprint/)
 
 [Echoprint](http://echoprint.me) is an open source library to fingerprint Audio, in this repo you'll find the code needed to make it run under Android.
@@ -12,6 +13,13 @@ This repo contains 3 folders:
 `jni` Contains the NDK/jni code needed to compile the native library yourself. You'll need to download the Echoprint source, as well as the Boost libraries in order to compile it.
 
 Enjoy!
+
+## Update 29-05-2015
+
+The following major changes have been made to the project:
+* Updated JNI library generated based on Android NDK Revision 10e, Boost 1.58.0 and latest echoprint-codegen C++ library.
+* Eclipse projects imported into Android Studio 1.2.1.1 and configured to work with latest Android SDK (level 22).
+* Removed the Echonest API calls because it is no longer available (https://developer.echonest.com/forums/thread/3650). Now using the MooMash API (http://www.mooma.sh/api.html).
 
 ## License
 
