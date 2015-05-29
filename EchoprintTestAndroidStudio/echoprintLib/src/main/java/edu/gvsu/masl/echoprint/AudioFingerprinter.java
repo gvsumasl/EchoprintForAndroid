@@ -37,6 +37,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -60,9 +61,14 @@ public class AudioFingerprinter implements Runnable
 	public final static String TITLE_KEY = "track";
 	public final static String TRACK_ID_KEY = "track_id";
 	public final static String ARTIST_KEY = "artist";
-	
-	private final String SERVER_URL = "<your server address here>/query?fp_code=";
-	
+
+	// Disabled because the Echonest API is no longer available (https://developer.echonest.com/forums/thread/3650).
+//	private final String SERVER_URL = "<your server address here>/query?fp_code=";
+
+	// Instead now using the MooMash API (http://www.mooma.sh/api.html).
+	// Remember to request an API key from MooMash through the website and replace it in the url below.
+	private final String SERVER_URL = "http://api.mooma.sh/v1/song/identify?api_key=YOURMOOMASHAPIKEYHERE&code=";
+
 	private final int FREQUENCY = 11025;
 	private final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
 	private final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;	
@@ -234,11 +240,40 @@ public class AudioFingerprinter implements Runnable
 	    	            instream.close();
 	    	        }
 	     			Log.d("Fingerprinter", "Results fetched in: " + (System.currentTimeMillis() - time) + " millis");
-	    			
-	     			
+
+					// On successful recognition the MooMash API returns a JSON structure such as:
+					// {"response":{"songs":[{"artist_id":"","artist_name":"P!nk","id":"","score":54,"title":"Don't Let Me Get Me","message":"OK"}],"status":{"version":"1.0","message":"Success","code":0}}}
+					Log.v("AudioFingerprinter", "run - result: " + result);
+
 	    			// parse JSON
 		    		JSONObject jobj = new JSONObject(result);
-		    		
+
+					if (jobj.has("response")) {
+						JSONObject responseObject = jobj.getJSONObject("response");
+
+						if (responseObject.has("songs")) {
+							JSONArray songsArray = responseObject.getJSONArray("songs");
+
+							if (songsArray.length() > 0) {
+								JSONObject songObject = songsArray.getJSONObject(0);
+
+								Hashtable<String, String> match = new Hashtable<String, String>();
+								match.put("artist_name", songObject.getString("artist_name"));
+								match.put("title", songObject.getString("title"));
+
+								didFindMatchForCode(match, code);
+							}
+							else {
+								didNotFindMatchForCode(code);
+							}
+						}
+					}
+					else {
+						didFailWithException(new Exception("result JSON parsing error"));
+					}
+
+					// Old parsing code for Echonest API.
+					/*
 		    		if(jobj.has("code"))
 		    			Log.d("Fingerprinter", "Response code:" + jobj.getInt("code") + " (" + this.messageForCode(jobj.getInt("code")) + ")");
 		    		
@@ -273,6 +308,7 @@ public class AudioFingerprinter implements Runnable
 		    		{
 		    			didFailWithException(new Exception("Unknown error"));
 		    		}
+					*/
 		    		
 		    		firstRun = false;
 				
@@ -464,7 +500,7 @@ public class AudioFingerprinter implements Runnable
 	
 	private void didFindMatchForCode(final Hashtable<String, String> table, final String code)
 	{
-		Log.v("AudioFingerprinter", "didFindMatchForCode");
+		Log.v("AudioFingerprinter", "didFindMatchForCode - table: " + table);
 
 		if(listener == null)
 			return;
@@ -508,7 +544,7 @@ public class AudioFingerprinter implements Runnable
 	
 	private void didFailWithException(final Exception e)
 	{
-		Log.v("AudioFingerprinter", "didFailWithException");
+		Log.v("AudioFingerprinter", "didFailWithException - e: " + e.getLocalizedMessage());
 
 		if(listener == null)
 			return;
