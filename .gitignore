@@ -7,3 +7,6 @@ local.properties
 
 # Mac OS X clutter
 *.DS_Store
+
+# Android Studio
+EchoprintTestAndroidStudio/.idea/workspace.xml

@@ -106,8 +106,6 @@ public class EchoprintTestActivity extends Activity implements AudioFingerprinte
 
 	public void didGenerateFingerprintCode(String code) 
 	{
-//		Log.v("EchoprintTestActivity", "didGenerateFingerprintCode - code: " + code);
-
 		status.setText("Will fetch info for code starting:\n" + code.substring(0, Math.min(50, code.length())));
 	}
 

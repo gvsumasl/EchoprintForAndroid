@@ -354,6 +354,8 @@ public class AudioFingerprinter implements Runnable
 	
 	private void didFinishListening()
 	{
+		Log.v("AudioFingerprinter", "didFinishListening");
+
 		if(listener == null)
 			return;
 		
@@ -374,6 +376,8 @@ public class AudioFingerprinter implements Runnable
 	
 	private void didFinishListeningPass()
 	{
+		Log.v("AudioFingerprinter", "didFinishListeningPass");
+
 		if(listener == null)
 			return;
 		
@@ -394,6 +398,8 @@ public class AudioFingerprinter implements Runnable
 	
 	private void willStartListening()
 	{
+		Log.v("AudioFingerprinter", "willStartListening");
+
 		if(listener == null)
 			return;
 		
@@ -414,6 +420,8 @@ public class AudioFingerprinter implements Runnable
 	
 	private void willStartListeningPass()
 	{
+		Log.v("AudioFingerprinter", "willStartListeningPass");
+
 		if(listener == null)
 			return;
 			
@@ -456,6 +464,8 @@ public class AudioFingerprinter implements Runnable
 	
 	private void didFindMatchForCode(final Hashtable<String, String> table, final String code)
 	{
+		Log.v("AudioFingerprinter", "didFindMatchForCode");
+
 		if(listener == null)
 			return;
 			
@@ -476,6 +486,8 @@ public class AudioFingerprinter implements Runnable
 	
 	private void didNotFindMatchForCode(final String code)
 	{
+		Log.v("AudioFingerprinter", "didNotFindMatchForCode");
+
 		if(listener == null)
 			return;
 		
@@ -496,6 +508,8 @@ public class AudioFingerprinter implements Runnable
 	
 	private void didFailWithException(final Exception e)
 	{
+		Log.v("AudioFingerprinter", "didFailWithException");
+
 		if(listener == null)
 			return;
 			
